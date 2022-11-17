@@ -11,6 +11,11 @@ library(pacman)
 pacman::p_load(tidyverse, ggthemes, ggpubr)
 
 
+
+
+
+
+
 ```
 
 ```{r poisson_dist}
