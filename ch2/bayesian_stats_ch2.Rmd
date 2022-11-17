@@ -1,0 +1,75 @@
+---
+title: "bayesian_stats_ch2"
+author: "inoue jin"
+date: "2022-11-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(pacman)
+pacman::p_load(tidyverse, ggthemes, ggpubr)
+
+
+```
+
+```{r poisson_dist}
+
+# help(rpois)
+
+df1 <- tibble(x = rpois(n = 100, lambda = 2.1),
+             y = rpois(n = 100, lambda = 21), 
+             label = "n = 100")
+
+
+df2 <- tibble(x = rpois(n = 1000, lambda = 2.1),
+             y = rpois(n = 1000, lambda = 21),
+             label = "n = 1000")
+
+df3 <- tibble(x = rpois(n = 10000,lambda = 2.1),
+               y = rpois(n = 10000, lambda = 21),
+               label = "n = 10000")
+
+df <- df1 %>% 
+  bind_rows(df2) %>% 
+  bind_rows(df3)
+
+ggx <- df %>% 
+  ggplot(aes(x = x, fill = factor(label)))
+
+ggy <- df %>% 
+  ggplot(aes(x = y, fill = factor(label)))
+
+gg_x_pois <- ggx +
+  geom_histogram() + 
+  facet_wrap(~factor(label)) + 
+  labs(title = "Poisson(lambda = 2.1)")
+
+
+gg_y_pois <- ggy + 
+  geom_histogram() + 
+  facet_wrap(~factor(label)) + 
+  labs(title = "Poisson(lambda = 21)")
+
+p_load(cowplot, ggpubr)
+
+# cowplot::plot_grid(gg_x_pois, gg_y_pois, align = "h")
+
+gg_poisson <- ggpubr::ggarrange(gg_x_pois, gg_y_pois, nrow = 2, ncol = 1)
+
+ggsave(filename = "poisson_dist_ch2.png", plot = gg_poisson)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
