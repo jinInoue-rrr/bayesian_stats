@@ -4,3 +4,5 @@
 .Ruserdata
 /memo
 *.Rpoj
+*.tex
+*.log

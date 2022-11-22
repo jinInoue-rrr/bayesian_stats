@@ -2,19 +2,17 @@
 title: "bayesian_stats_ch2"
 author: "inoue jin"
 date: "2022-11-17"
-output: html_document
+output: 
+  pdf_document:
+    latex_engine: lualatex
+  html_document:
+documentclass: ltjsarticle
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(pacman)
 pacman::p_load(tidyverse, ggthemes, ggpubr)
-
-
-
-
-
-
 
 ```
 
@@ -67,8 +65,54 @@ ggsave(filename = "poisson_dist_ch2.png", plot = gg_poisson)
 ```
 
 
+```{r normal_dist}
+
+y <- rnorm(n = 10000, mean = 10.75, sd = sqrt(0.8))
+
+empirical_dist <- cumsum(sort(y))
+
+df <- tibble(c_sum = empirical_dist,
+             y = sort(y))
+
+df %>% 
+  ggplot(aes(x = y, y = c_sum)) + 
+  geom_point(size = 0.8)
+
+curve(dnorm(x, mean = 10.75, sd = 0.8), from = 8, to  = 14)
+
+cdf <- ecdf(rnorm(n = 10000, mean = 10.75, sd = 0.8))
+
+df <- tibble(x = sort(rnorm(n = 10000, mean = 10.75, sd = 0.8)), y = cumsum(x))
+
+df %>% 
+  ggplot(aes(x = x, y = y)) + 
+  geom_point()
+
+# help(ecdf)
+# help(dnorm)
+
+```
 
 
+```{r log_normal}
+n =10000
+
+df <- tibble(y = rnorm(n = n, mean = 10.75, sd = 0.8),
+             logy = rlnorm(n = n, meanlog = 10.75, sdlog = 0.8),
+             d = dnorm(y),
+             c = cumsum(d))
+
+df %>% 
+  ggplot(aes(x = y)) + 
+  geom_density()
+
+df %>% 
+  ggplot(aes(x = logy)) + 
+  geom_density()
+
+# help(pnorm)
+
+```
 
 
 
