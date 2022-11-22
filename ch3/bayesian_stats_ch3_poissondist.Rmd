@@ -1,0 +1,156 @@
+---
+title: "bayesian_stats_ch3_poisson"
+author: "inoue jin"
+date: "2022-11-22"
+output: 
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(pacman)
+pacman::p_load(tidyverse, ggthemes, ggpubr, RColorBrewer)
+
+```
+
+### "3. 二項モデルとポアソンモデル"より
+
+#### GSSの例:ポアソンモデル
+
+総合的社会調査（GSS）より、40歳の女性155人の学歴と子供の数に関するデータを収集。
+
+学士号を持つかどうか($Y=1$)で、女性の子供の数を比較する。
+
+$Y_{i,1}$ を学士号を持たない$n_{1}$人の女性の子供の数とし、$Y_{i,2}$を学士号を持つ女性の子供の数とする。
+
+サンプリングモデルは以下の通り
+
+$$
+Y_{1,1}, \dots,Y_{n_{1},1}\mid\theta_{1} \sim \text{i.i.d.} \,\,Poisson(\theta_{1}),
+$$
+
+$$
+Y_{1,2}, \dots,Y_{n_{2},2}\mid\theta_{2} \sim \text{i.i.d.} \,\,Poisson(\theta_{2}),
+$$
+
+```{r GSS, echo=FALSE}
+# 大卒未満の女性の数と子供の合計、平均
+
+n1 <- 111
+sy1 <- 217
+my1 <- 217/111
+
+# 大卒以上の女性の数と子供の合計、平均
+
+n2 <- 44
+sy2 <- 66
+my2 <- 66/44
+
+# 事前分布のパラメータ
+
+a <- 2
+b <- 1
+
+# 事前分布は、gamma(a = 2, b = 1) なので、事後分布はgamma(a + \sum_y, b + n)となる
+# gammaは共役事前分布
+
+# 事後平均E(\theta_{1}\mid y1) = (a+sum_y)/(b+n)
+
+post_mean1 <- (a+sy1)/(b+n1)
+post_mean1
+
+# 95%信用区間
+
+CI1 <- qgamma(c(0.025, 0.975), a+sy1, b+n1)
+CI1
+
+
+```
+
+
+#### 事後分布
+
+以下の事後分布の比較から、大まかな傾向として$\theta_{1} > \theta_{2}$となっていることが伺える。
+
+
+```{r predictive_dist}
+# 予測分布のプロット
+# それぞれの予測分布と共通の事前分布から乱数生成してプロットしてみる
+
+N <- 100000
+
+t1 <- tibble(theta = rgamma(N, a+sy1, b+n1),
+             label = "theta1")
+t2 <- tibble(theta = rgamma(N, a+sy2, b+n2),
+             label = "theta2")
+p <- tibble(theta = rgamma(N, a, b),
+            label = "prior")
+
+df <- bind_rows(t1, t2, p)
+
+
+df %>% 
+  ggplot(aes(x = theta, color = as.factor(label))) + 
+  geom_density(aes(fill = as.factor(label), alpha = 0.5)) +  
+  scale_fill_brewer(palette= "PuRd")+
+  scale_color_brewer(palette = "PuRd")+
+  theme_classic()
+
+
+```
+
+#### 予測分布
+
+予測分布の式を導出する
+
+
+$$
+\begin{aligned}
+  p(\tilde{y}\mid y_{1},\dots, y_{n}) &= \int_{0}^{\infty}p(\tilde{y}, \theta \mid y_{1},\dots,y_{n})d\theta\\
+  &= \int_{0}^{\infty}p(\tilde{y}\mid \theta, y_{1},\dots,y_{n})p(\theta\mid y_{1},\dots,y_{n})d\theta\\
+  &= \int_{0}^{\infty}\frac{p(\tilde{y},y_{1},\dots,y_{n}\mid \theta)p(\theta)}{p(\theta, y_{1}, \dots,y_{n})} p(\theta\mid y_{1},\dots,y_{n})d\theta\\
+  &= \int_{0}^{\infty}\frac{p(\tilde{y}\mid\theta)p(y_{1}\mid\theta)\cdots p(y_{n}\mid\theta)}{p(y_{1}\mid\theta)\cdots p(y_{n}\mid\theta)}p(\theta\mid y_{1},\dots,y_{n})d\theta\\
+  &= \int_{0}^{\infty}p(\tilde{y}\mid \theta)p(\theta\mid y_{1},\dots,y_{n})d\theta\\
+  &= \int_{0}^{\infty}dpois(\tilde{y},\theta)dgamma(\theta, a + \sum_{i} y_{i}, b+n)d\theta\\
+  &= \int_{0}^{\infty}\left(\frac{\theta^{\tilde{y}}e^{-\theta}}{\tilde{y}!}\right)\left(\frac{(b+n)^{a+\sum_{i}y_{i}}}{\Gamma(a + \sum_{i}y_{i})}\theta^{a+\sum_{i}y_{i}-1}e^{-(b+n)\theta}\right)d\theta\\
+  &= \frac{\Gamma(a+\sum_{i}y_{i}+\tilde{y})}{\Gamma(\tilde{y}+1)\Gamma(a+\sum_{i}y_{i})}\left(\frac{b+n}{b+n+1}\right)^{a+\sum_{i}y_{i}}\left(\frac{1}{b+n+1}\right)^{\tilde{y}}
+\end{aligned}
+$$
+1行目は周辺確率密度関数の定義より、2行目は確率の公理$P(F\cap G\mid H) = P(F \mid G\cap H)P(G\mid H)$より従う。3行目はベイズルール、4行目はモデルの定義$Y_{1},\dots,Y_{n}\mid \theta \,\,\text{i.i.d.} \sim Poisson(\theta)$より$\theta$を条件づけた後の独立性から従う。
+6,7行目は定義より従う。8行目はガンマ関数の関係$1=\int_{0}^{\infty}\frac{b^a}{\Gamma(a)}\theta^{a-1}e^{-b\theta}$を利用して導ける。
+
+なお、この予測分布は負の二項分布$NegativeBinomial(a+\sum_{i}y_{i}, b+n)$と一致する。
+
+以下は、子供の数の事後予測分布を"学士号なし"と"学士号あり"の場合で分けて可視化したものである。
+平均出生率$\theta$の2つの事後分布の間の差に比べて、子供の数$\tilde{Y}$の2つの事後予測分布の間には大きな違いがない。
+
+```{r pred}
+y0 <- 0:10
+ngb1 <- tibble(p = dnbinom(y0,size = a+sy1, mu = (a+sy1)/(b+n1)),
+               y = y0,
+              label = "NoBachelor")
+
+ngb2 <- tibble(p = dnbinom(y0, size = a+sy2,mu = (a+sy2)/(b+n2)),
+               y = y0,
+               label = "Bachelor")
+
+pred <- bind_rows(ngb1, ngb2)
+
+pred %>% glimpse()
+
+pred %>% 
+  ggplot(aes(x = y, y = p,color = label)) + 
+  geom_bar(width = 0.3, stat = "identity", position = "dodge",aes(fill = label, alpha = 0.9 ))+
+  theme_pubr()
+
+```
+
+
+
+
+
+
+
+
+

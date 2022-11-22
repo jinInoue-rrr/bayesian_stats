@@ -1,0 +1,239 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={bayesian\_stats\_ch3\_poisson},
+  pdfauthor={inoue jin},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{bayesian\_stats\_ch3\_poisson}
+\author{inoue jin}
+\date{2022-11-22}
+
+\begin{document}
+\maketitle
+
+\hypertarget{ux4e8cux9805ux30e2ux30c7ux30ebux3068ux30ddux30a2ux30bdux30f3ux30e2ux30c7ux30ebux3088ux308a}{%
+\subsubsection{``3.
+二項モデルとポアソンモデル''より}\label{ux4e8cux9805ux30e2ux30c7ux30ebux3068ux30ddux30a2ux30bdux30f3ux30e2ux30c7ux30ebux3088ux308a}}
+
+\hypertarget{gssux306eux4f8bux30ddux30a2ux30bdux30f3ux30e2ux30c7ux30eb}{%
+\paragraph{GSSの例:ポアソンモデル}\label{gssux306eux4f8bux30ddux30a2ux30bdux30f3ux30e2ux30c7ux30eb}}
+
+総合的社会調査（GSS）より、40歳の女性155人の学歴と子供の数に関するデータを収集。
+
+学士号を持つかどうか(\(Y=1\))で、女性の子供の数を比較する。
+
+\(Y_{i,1}\)
+を学士号を持たない\(n_{1}\)人の女性の子供の数とし、\(Y_{i,2}\)を学士号を持つ女性の子供の数とする。
+
+サンプリングモデルは以下の通り
+
+\[
+Y_{1,1}, \dots,Y_{n_{1},1}\mid\theta_{1} \sim \text{i.i.d.} \,\,Poisson(\theta_{1}),
+\]
+
+\[
+Y_{1,2}, \dots,Y_{n_{2},2}\mid\theta_{2} \sim \text{i.i.d.} \,\,Poisson(\theta_{2}),
+\]
+
+\begin{verbatim}
+## [1] 1.955357
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 1.704943 2.222679
+\end{verbatim}
+
+\hypertarget{ux4e8bux5f8cux5206ux5e03}{%
+\paragraph{事後分布}\label{ux4e8bux5f8cux5206ux5e03}}
+
+以下の事後分布の比較から、大まかな傾向として\(\theta_{1} > \theta_{2}\)となっていることが伺える。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 予測分布のプロット}
+\CommentTok{\# それぞれの予測分布と共通の事前分布から乱数生成してプロットしてみる}
+
+\NormalTok{N }\OtherTok{\textless{}{-}} \DecValTok{100000}
+
+\NormalTok{t1 }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{(}\AttributeTok{theta =} \FunctionTok{rgamma}\NormalTok{(N, a}\SpecialCharTok{+}\NormalTok{sy1, b}\SpecialCharTok{+}\NormalTok{n1),}
+             \AttributeTok{label =} \StringTok{"theta1"}\NormalTok{)}
+\NormalTok{t2 }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{(}\AttributeTok{theta =} \FunctionTok{rgamma}\NormalTok{(N, a}\SpecialCharTok{+}\NormalTok{sy2, b}\SpecialCharTok{+}\NormalTok{n2),}
+             \AttributeTok{label =} \StringTok{"theta2"}\NormalTok{)}
+\NormalTok{p }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{(}\AttributeTok{theta =} \FunctionTok{rgamma}\NormalTok{(N, a, b),}
+            \AttributeTok{label =} \StringTok{"prior"}\NormalTok{)}
+
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{bind\_rows}\NormalTok{(t1, t2, p)}
+
+
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ theta, }\AttributeTok{color =} \FunctionTok{as.factor}\NormalTok{(label))) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_density}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =} \FunctionTok{as.factor}\NormalTok{(label), }\AttributeTok{alpha =} \FloatTok{0.5}\NormalTok{)) }\SpecialCharTok{+}  
+  \FunctionTok{scale\_fill\_brewer}\NormalTok{(}\AttributeTok{palette=} \StringTok{"PuRd"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"PuRd"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme\_classic}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bayesian_stats_ch3_poisson_files/figure-latex/predictive_dist-1.pdf}
+
+\hypertarget{ux4e88ux6e2cux5206ux5e03}{%
+\paragraph{予測分布}\label{ux4e88ux6e2cux5206ux5e03}}
+
+予測分布の式を導出する
+
+\[
+\begin{aligned}
+  p(\tilde{y}\mid y_{1},\dots, y_{n}) &= \int_{0}^{\infty}p(\tilde{y}, \theta \mid y_{1},\dots,y_{n})d\theta\\
+  &= \int_{0}^{\infty}p(\tilde{y}\mid \theta, y_{1},\dots,y_{n})p(\theta\mid y_{1},\dots,y_{n})d\theta\\
+  &= \int_{0}^{\infty}\frac{p(\tilde{y},y_{1},\dots,y_{n}\mid \theta)p(\theta)}{p(\theta, y_{1}, \dots,y_{n})} p(\theta\mid y_{1},\dots,y_{n})d\theta\\
+  &= \int_{0}^{\infty}\frac{p(\tilde{y}\mid\theta)p(y_{1}\mid\theta)\cdots p(y_{n}\mid\theta)}{p(y_{1}\mid\theta)\cdots p(y_{n}\mid\theta)}p(\theta\mid y_{1},\dots,y_{n})d\theta\\
+  &= \int_{0}^{\infty}p(\tilde{y}\mid \theta)p(\theta\mid y_{1},\dots,y_{n})d\theta\\
+  &= \int_{0}^{\infty}dpois(\tilde{y},\theta)dgamma(\theta, a + \sum_{i} y_{i}, b+n)d\theta\\
+  &= \int_{0}^{\infty}\left(\frac{\theta^{\tilde{y}}e^{-\theta}}{\tilde{y}!}\right)\left(\frac{(b+n)^{a+\sum_{i}y_{i}}}{\Gamma(a + \sum_{i}y_{i})}\theta^{a+\sum_{i}y_{i}-1}e^{-(b+n)\theta}\right)d\theta\\
+  &= \frac{\Gamma(a+\sum_{i}y_{i}+\tilde{y})}{\Gamma(\tilde{y}+1)\Gamma(a+\sum_{i}y_{i})}\left(\frac{b+n}{b+n+1}\right)^{a+\sum_{i}y_{i}}\left(\frac{1}{b+n+1}\right)^{\tilde{y}}
+\end{aligned}
+\]
+1行目は周辺確率密度関数の定義より、2行目は確率の公理\(P(F\cap G\mid H) = P(F \mid G\cap H)P(G\mid H)\)より従う。3行目はベイズルール、4行目はモデルの定義\(Y_{1},\dots,Y_{n}\mid \theta \,\,\text{i.i.d.} \sim Poisson(\theta)\)より\(\theta\)を条件づけた後の独立性から従う。
+6,7行目は定義より従う。8行目はガンマ関数の関係\(1=\int_{0}^{\infty}\frac{b^a}{\Gamma(a)}\theta^{a-1}e^{-b\theta}\)を利用して導ける。
+
+なお、この予測分布は負の二項分布\(NegativeBinomial(a+\sum_{i}y_{i}, b+n)\)と一致する。
+
+以下は、子供の数の事後予測分布を''学士号なし''と''学士号あり''の場合で分けて可視化したものである。
+平均出生率\(\theta\)の2つの事後分布の間の差に比べて、子供の数\(\tilde{Y}\)の2つの事後予測分布の間には大きな違いがない。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y0 }\OtherTok{\textless{}{-}} \DecValTok{0}\SpecialCharTok{:}\DecValTok{10}
+\NormalTok{ngb1 }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{(}\AttributeTok{p =} \FunctionTok{dnbinom}\NormalTok{(y0,}\AttributeTok{size =}\NormalTok{ a}\SpecialCharTok{+}\NormalTok{sy1, }\AttributeTok{mu =}\NormalTok{ (a}\SpecialCharTok{+}\NormalTok{sy1)}\SpecialCharTok{/}\NormalTok{(b}\SpecialCharTok{+}\NormalTok{n1)),}
+               \AttributeTok{y =}\NormalTok{ y0,}
+              \AttributeTok{label =} \StringTok{"NoBachelor"}\NormalTok{)}
+
+\NormalTok{ngb2 }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{(}\AttributeTok{p =} \FunctionTok{dnbinom}\NormalTok{(y0, }\AttributeTok{size =}\NormalTok{ a}\SpecialCharTok{+}\NormalTok{sy2,}\AttributeTok{mu =}\NormalTok{ (a}\SpecialCharTok{+}\NormalTok{sy2)}\SpecialCharTok{/}\NormalTok{(b}\SpecialCharTok{+}\NormalTok{n2)),}
+               \AttributeTok{y =}\NormalTok{ y0,}
+               \AttributeTok{label =} \StringTok{"Bachelor"}\NormalTok{)}
+
+\NormalTok{pred }\OtherTok{\textless{}{-}} \FunctionTok{bind\_rows}\NormalTok{(ngb1, ngb2)}
+
+\NormalTok{pred }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{glimpse}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 22
+## Columns: 3
+## $ p     <dbl> 1.427473e-01, 2.766518e-01, 2.693071e-01, 1.755660e-01, 8.622930~
+## $ y     <int> 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ~
+## $ label <chr> "NoBachelor", "NoBachelor", "NoBachelor", "NoBachelor", "NoBache~
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ y, }\AttributeTok{y =}\NormalTok{ p,}\AttributeTok{color =}\NormalTok{ label)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.3}\NormalTok{, }\AttributeTok{stat =} \StringTok{"identity"}\NormalTok{, }\AttributeTok{position =} \StringTok{"dodge"}\NormalTok{,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ label, }\AttributeTok{alpha =} \FloatTok{0.9}\NormalTok{ ))}\SpecialCharTok{+}
+  \FunctionTok{theme\_pubr}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bayesian_stats_ch3_poisson_files/figure-latex/pred-1.pdf}
+
+\end{document}
