@@ -3,8 +3,10 @@ title: "bayesian_stats_ch3_poisson"
 author: "inoue jin"
 date: "2022-11-22"
 output: 
+  pdf_document: 
+    latex_engine: lualatex
   html_document: default
-  pdf_document: default
+documentclass: ltjsarticle
 ---
 
 ```{r setup, include=FALSE}
