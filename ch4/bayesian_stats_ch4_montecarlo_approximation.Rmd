@@ -1,0 +1,176 @@
+---
+title: "bayesian_stats_ch4_montecarlo_approximation"
+author: "inoue jin"
+date: "2022-12-03"
+output:
+  pdf_document:
+    latex_engine: lualatex
+  html_document: default
+documentclass: ltjsarticle
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+library(pacman)
+pacman::p_load(tidyverse, ggthemes, ggpubr, RColorBrewer, reshape2)
+
+```
+
+### ガンマ分布の真の密度関数と経験分布によるモンテカルロ近似
+
+```{r gamma_monte_carlo}
+a = 68
+b = 45
+
+s100 <- tibble(theta = rgamma(100, a, b))
+s1000 <- tibble(theta = rgamma(1000, a, b))
+s10000 <- tibble(theta = rgamma(10000, a, b))
+
+s100
+# curve(dgamma(x, a, b), -2, 4)
+
+gg <- ggplot(data.frame(x = c(-2, 4)), aes(x = x)) + 
+  xlim(c(-2, 4)) + 
+  ylim(c(0, 3)) + 
+  stat_function(fun = dgamma, args = list(a, b))
+
+gg100 <- s100 %>% 
+  ggplot(aes(x = theta)) + 
+  geom_density(linetype = "dotted")+ 
+  stat_function(fun = dgamma, args = list(a, b), color = "red") + 
+  labs(title = "S = 100") + 
+  xlab("theta")
+gg100
+
+gg1000 <- s1000 %>% 
+  ggplot(aes(x= theta)) + 
+  geom_density(linetype = "dotted") + 
+  stat_function(fun = dgamma, args = list(a, b), color = "red") + 
+  labs(title = "S = 1000")+
+  xlab("theta")
+
+gg1000
+
+```
+
+
+### 数値的な評価
+
+まず、モンテカルロ法によって得られる近似値を、事後要約統計量の解析的に得られる解と比較する。
+
+- モデル$Y_{1}, \dots, Y_{n}\mid\theta \sim \text{i.i.d.} Poisson(\theta)$
+- $\theta$の事前分布は$gamma(a, b)$
+- この時、$Y_{1} = y_{1}, \dots, Y_{n} = y_{n}$を観測した時の事後分布は、$gamma(a+\Sigma y_{i}, b+n)$となる
+- 事後平均は$(a+\Sigma y_{i})/(b+n)$ = 1.51となる
+
+```{r monte_carlo}
+
+a <- 2
+b <- 1
+sy <- 66
+n <- 44
+
+theta_mc10 <- rgamma(10, a + sy, b+n)
+theta_mc100 <- rgamma(100, a+sy, b+n)
+theta_mc1000 <- rgamma(1000, a+sy, b+n)
+
+mean(theta_mc10)
+mean(theta_mc100)
+mean(theta_mc1000)
+
+## theta < 1.75の確率を計算
+# Pro(theta < 1.75)
+# 
+
+pgamma(q = 1.75, a+sy, b+n)
+
+mean(theta_mc10 < 1.75)# \sum 1{theta_mc10 < 1.75}*(1/n) 
+
+## 事後分布による95%信用領域
+qgamma(c(0.025, 0.975), a+sy, b+n)
+
+# monte carlo標本から95%信用領域を求める
+
+quantile(theta_mc10, c(0.025, 0.975))
+
+# quantile(theta_mc100, 0.975) %>% as.double()
+
+
+```
+
+```{r dataprep}
+
+# listで、ここの累積リストに対してquantileを適用して累積を計算する
+
+# theta_mc1000
+# theta_mc1000[1:1000]
+
+theta_list <- list()# 1000 * 1000のリスト作成
+
+# O(N^2)の計算時間
+for(i in 1:1000){
+  theta_list[[i]] <- theta_mc1000[1:i]
+}
+
+
+# theta_list %>% glimpse()
+# theta_list[[1]]
+# map(.x = theta_list, ~as.double(quantile(.x, 0.975)))
+
+# 累積平均、累積97.5%分位点、累積2.5%分位点をまとめて作成
+
+cum_df <- tibble(n = 1:1000, 
+                 cum_mean = cumsum(theta_mc1000)/(1:1000),
+                 cum_upper = unlist(map(.x = theta_list, ~as.double(quantile(.x, 0.975)))),
+                 cum_lower = unlist(map(.x = theta_list, ~as.double(quantile(.x, 0.025)))))
+
+# cum_df %>% summary()
+
+# {reshape2}でlong型にする
+
+data_long <- reshape2::melt(cum_df, id = "n")
+
+data_long %>% glimpse()
+
+
+```
+
+```{r cumulative, echo = TRUE}
+gg_cumsum <- data_long %>% 
+  ggplot(aes(x = n, y = value, color = variable))+
+  geom_line() + 
+  xlab("sample size")+
+  ylab("cumulative values")+
+  labs(title = "Cumulative Means and 95% Credible Intervals")
+
+gg_cumsum
+
+```
+
+```{r save_image, include=FALSE}
+ggsave("cumulative_values.png", gg_cumsum)
+
+```
+
+
+
+```{r}
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
