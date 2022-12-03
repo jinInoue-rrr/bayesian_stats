@@ -17,7 +17,8 @@ pacman::p_load(tidyverse, ggthemes, ggpubr, RColorBrewer, reshape2)
 
 ```
 
-### ガンマ分布の真の密度関数と経験分布によるモンテカルロ近似
+### 4.1 モンテカルロ法
+#### ガンマ分布の真の密度関数と経験分布によるモンテカルロ近似
 
 ```{r gamma_monte_carlo}
 a = 68
@@ -82,7 +83,7 @@ mean(theta_mc1000)
 
 ## theta < 1.75の確率を計算
 # Pro(theta < 1.75)
-# 
+
 
 pgamma(q = 1.75, a+sy, b+n)
 
@@ -96,7 +97,6 @@ qgamma(c(0.025, 0.975), a+sy, b+n)
 quantile(theta_mc10, c(0.025, 0.975))
 
 # quantile(theta_mc100, 0.975) %>% as.double()
-
 
 ```
 
@@ -154,17 +154,90 @@ ggsave("cumulative_values.png", gg_cumsum)
 
 ```
 
+このような図は、モンテカルロ推定値が真の値に収束しているかを判定する上で役に立つ。また、モンテカルロ標準誤差を用いることで、事後平均の近似の精度を評価することができる。
+
+- $\bar{\theta} = \sum_{s=1}^{S}\theta^{(s)}/S$をモンテカルロ標本の平均とすると、中心極限定理より、$\bar{\theta}$は期待値$\mathbb{E}[\theta\mid y_{1},\dots,y_{n}]$、標準偏差$\sqrt{Var[\theta\mid y_{1},\dots,y_{n}]/S}$で近似でき、モンテカルロ標準偏差はこの標準偏差を標本で近似したものである。
+- $\hat{\sigma}^{2} = \Sigma(\theta^{(s)}-\bar{\theta})^{2}/(S-1)$を$Var[\theta\mid y_{1},\dots,y_{n}]$のモンテカルロ推定値とすると、モンテカルロ標準誤差は$\sqrt{\hat{\sigma}^{2}/S}$となる。
+- $\theta$の事後平均の95%近似モンテカルロ信頼区間は$\bar{\theta}\pm2\sqrt{\hat{\sigma}^{2}/S}$である。
+- モンテカルロ標本のサイズの基準としては、このモンテカルロ標準誤差が$\mathbb{E}[\theta\mid y_{1}, \dots, y_{n}]$を報告する制度よりも小さくなるように、$S$を十分に大きく取るというようなことが考えられる。
 
 
-```{r}
+```{r samplesize, include=FALSE}
+S = 100
+gamma_100 <- rgamma(S, 68, 45)
+var(gamma_100)
+#モンテカルロ標準誤差
 
-
-
-
+mc_error <- sqrt(var(gamma_100)/S)
+mc_error
 ```
 
 
+### 4.2 任意の関数に対する事後推測
 
+二項モデルを用いるとき、次のような対数オッズに関心があることがある。
+
+$$
+\text{log odds}(\theta) = \text{log}\frac{\theta}{1-\theta} = \gamma
+$$
+
+#### 例：対数オッズ
+
+1998年のGSS(General Social Survey)の回答者の54%は、宗教的志向がプロスタントであると回答し、非プロテスタントは少数派にとどまった。調査では、公立学校で経典を読むことを州または地方政府が要求することを禁止する最高裁判所の判決に同意するかどうかが尋ねられ、宗教的少数派（非プロテスタント）の$n=860$人のうち、$y=441$が同意したのに対し、プロテスタントでは1011人のうち、353人が判決に同意した。
+
+少数派の母集団に対応する母比率を$\theta$とする。標本モデルに二項分布を、事前分布に一様分布を用いると、$\theta$の事後分布は、$\text{beta}(y+1=442, n-y+1=220)$となる。
+
+
+```{r logodds}
+
+a <- 1
+b <- 1
+
+theta_prior_mc <- rbeta(10000, a, b)#Beta(a,b)でa=b=1とするとUniform(0,1)となる
+gamma_prior_mc <- log(theta_prior_mc/(1-theta_prior_mc))
+
+n <- 860
+y <- 441
+
+theta_post_mc <- rbeta(10000, y+1, n-y+1)
+gamma_post_mc <- log(theta_post_mc/(1-theta_post_mc))
+
+df_prior <- tibble(prior_odds = gamma_prior_mc,
+             prior_theta = theta_prior_mc) %>% 
+  mutate(id = row_number())
+
+df_post <- tibble(post_odds = gamma_post_mc,
+                  post_theta = theta_post_mc) %>% 
+  mutate(id = row_number())
+
+prior_long <- df_prior %>% 
+  reshape2::melt(id = "id")
+
+post_long <- df_post %>% 
+  reshape2::melt(id = "id")
+
+prior_long
+
+prior_long %>% 
+  ggplot(aes(x = value)) + 
+  geom_density(aes(color = factor(variable)))
+
+post_long %>% 
+  ggplot(aes(x = value)) + 
+  geom_density(aes(color = factor(variable)))
+
+
+odds <- tibble(prior_odds = gamma_prior_mc,
+               post_odds = gamma_post_mc)
+
+odds %>% 
+  ggplot()+
+  geom_density(aes(x = prior_odds),linetype = "dotted") + 
+  geom_density(aes(x = post_odds))+
+  xlab("log odds")
+
+
+```
 
 
 
