@@ -23,6 +23,7 @@ pacman::p_load(tidyverse, ggthemes, ggpubr, RColorBrewer, reshape2)
 a = 68
 b = 45
 
+
 s100 <- tibble(theta = rgamma(100, a, b))
 s1000 <- tibble(theta = rgamma(1000, a, b))
 s10000 <- tibble(theta = rgamma(10000, a, b))
