@@ -216,7 +216,7 @@ prior_long <- df_prior %>%
 post_long <- df_post %>% 
   reshape2::melt(id = "id")
 
-prior_long
+# prior_long
 
 prior_long %>% 
   ggplot(aes(x = value)) + 
